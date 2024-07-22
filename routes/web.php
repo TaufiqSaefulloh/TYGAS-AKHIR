@@ -13,9 +13,11 @@ use App\Http\Controllers\LoginController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\KategoridetailController;
 use App\Http\Controllers\TeamController;
+use App\Http\Controllers\PendaftaranController;
 
 use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
+use App\Models\Pendaftaran;
 
 // Rute untuk menampilkan form permintaan reset kata sandi
 Route::get('password/reset', [ForgotPasswordController::class, 'showLinkRequestForm'])->name('password.request');
@@ -42,6 +44,9 @@ Route::middleware(['admin'])->group(function () {
     Route::resource('/admin/contact', ContactController::class);
     Route::resource('/admin/table', TableController::class);
     Route::post('admin/logout', [AdminController::class, 'logout'])->name('admin.logout');
+    Route::get('/admin/pendaftaran', [FormController::class, 'tampil'])->name('form-pendaftaran');
+    // routes/web.php
+    Route::get('/pendaftaran/download', [FormController::class, 'download'])->name('pendaftaran.download');
 });
 
 Route::middleware(['user'])->group(function () {
@@ -77,3 +82,5 @@ Route::get('/detailevent/{id}', [PagesController::class, 'detailevent'])->name('
 
 Route::get('pelatihan/{id}/materi/{materi}', [PagesController::class, 'materi'])->name('materi');
 Route::get('/404', [PagesController::class, 'eror'])->name('eror');
+Route::get('/pendaftaran', [PagesController::class, 'pendaftaran'])->name('pendaftaran');
+Route::post('/pendaftaran', [PendaftaranController::class, 'store'])->name('store');

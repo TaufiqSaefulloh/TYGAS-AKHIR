@@ -20,12 +20,12 @@
             </a>
             <ul id="forms-nav" class="nav-content collapse show" data-bs-parent="#sidebar-nav">
                 <li>
-                    <a href="{{route('form-pertanyaan')}}" class="active">
+                    <a href="{{route('form-pertanyaan')}}">
                         <i class="bi bi-circle"></i><span>Form Pertanyaan</span>
                     </a>
                 </li>
                 <li>
-                    <a href="{{route('form-pendaftaran')}}">
+                    <a href="{{route('form-pendaftaran')}}" class="active">
                         <i class="bi bi-circle"></i><span>Form Pendaftaran</span>
                     </a>
                 </li>
@@ -89,47 +89,89 @@
 </aside><!-- End Sidebar-->
 
 <main id="main" class="main">
-    <h1>Form Pertanyaan</h1>
+    <h1>Form Pendaftaran</h1>
     <nav>
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="index.html">Home</a></li>
-            <li class="breadcrumb-item active">Form Pertanyaan</li>
+            <li class="breadcrumb-item active">Form Pendaftaran</li>
         </ol>
     </nav>
     </div><!-- End Page Title -->
 
-    <section class="seCtion">
+    <section class="section">
         <div class="card">
             <div class="card-body">
-                <h5 class="card-title">Pertanyaan Masuk</h5>
+                <h5 class="card-title">Data Pendaftar</h5>
+
+                <!-- Form untuk unduh data -->
+                <form action="{{ route('pendaftaran.download') }}" method="GET">
+                    <div class="row mb-3">
+                        <label for="date" class="col-sm-2 col-form-label">Pilih Tanggal</label>
+                        <div class="col-sm-4">
+                            <input type="date" class="form-control" id="date" name="date">
+                        </div>
+                        <div class="col-sm-2">
+                            <button type="submit" class="btn btn-primary">Unduh Data</button>
+                        </div>
+                    </div>
+                </form>
 
                 <!-- Table with stripped rows -->
                 <table class="table table-striped">
                     <thead>
                         <tr>
-                            <th scope="col">#</th>
-                            <th scope="col">Nama</th>
+                            <th scope="col">Nama Pemilik Usaha</th>
                             <th scope="col">Email</th>
-                            <th scope="col">Pertanyaan</th>
-                            <th scope="col">Tanggal</th>
+                            <th scope="col">NIK</th>
+                            <th scope="col">No KK</th>
+                            <th scope="col">No HP</th>
+                            <th scope="col">Tempat Lahir</th>
+                            <th scope="col">Tanggal Lahir</th>
+                            <th scope="col">Jenis Kelamin</th>
+                            <th scope="col">Pendidikan Terakhir</th>
+                            <th scope="col">Agama</th>
+                            <th scope="col">Kelurahan/Desa</th>
+                            <th scope="col">Kecamatan</th>
+                            <th scope="col">Kabupaten/Kota</th>
+                            <th scope="col">Jenis Produk</th>
                             <th scope="col">Action</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach($forms as $form)
+                        @php
+                        $currentDate = null;
+                        @endphp
+
+                        @foreach($pendaftaran as $data)
+                        @if ($currentDate != $data->created_at->format('Y-m-d'))
+                        @php
+                        $currentDate = $data->created_at->format('Y-m-d');
+                        @endphp
                         <tr>
-                            <th scope="row">{{ $form->id }}</th>
-                            <td>{{ $form->nama }}</td>
-                            <td>{{ $form->email }}</td>
-                            <td>{{ $form->pertanyaan }}</td>
-                            <td>{{ $form->created_at }}</td>
+                            <td colspan="16" class="bg-light text-center fw-bold">
+                                {{ \Carbon\Carbon::parse($currentDate)->format('d F Y') }}
+                            </td>
+                        </tr>
+                        @endif
+                        <tr>
+                            <td>{{ $data->nama_pemilik_usaha }}</td>
+                            <td>{{ $data->email }}</td>
+                            <td>{{ $data->nik }}</td>
+                            <td>{{ $data->no_kk }}</td>
+                            <td>{{ $data->no_hp }}</td>
+                            <td>{{ $data->tempat_lahir }}</td>
+                            <td>{{ $data->tanggal_lahir }}</td>
+                            <td>{{ $data->jenis_kelamin }}</td>
+                            <td>{{ $data->pendidikan_terakhir }}</td>
+                            <td>{{ $data->agama }}</td>
+                            <td>{{ $data->kelurahan_desa }}</td>
+                            <td>{{ $data->kecamatan }}</td>
+                            <td>{{ $data->kabupaten_kota }}</td>
+                            <td>{{ $data->jenis_produk }}</td>
                             <td>
-                                <a href="mailto:{{ $form->email }}?subject=Balasan%20untuk%20pertanyaan%20Anda&body={{ urlencode($form->pertanyaan) }}" class="btn btn-primary">Balas</a>
-                                <form action="{{ route('forms.destroy', $form->id) }}" method="POST" style="display:inline-block;">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="btn btn-danger" onclick="return confirm('Apakah Anda yakin ingin menghapus data ini?')">Delete</button>
-                                </form>
+                                <!-- Actions, e.g., Edit/Delete -->
+                                <a href="#" class="btn btn-primary btn-sm">Edit</a>
+                                <a href="#" class="btn btn-danger btn-sm">Delete</a>
                             </td>
                         </tr>
                         @endforeach

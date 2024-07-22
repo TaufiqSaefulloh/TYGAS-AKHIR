@@ -24,7 +24,7 @@ class PagesController extends Controller
     public function pelatihan()
     {
         $categories = Category::all();
-        $category_detail = Kategoridetail::all()->random(6);
+        $category_detail = Kategoridetail::all()->random(0);
         $contacts = Contact::all();
         $data = [
             'title' => 'Pelatihan',
@@ -156,5 +156,15 @@ class PagesController extends Controller
             'title' => '404'
         ];
         return view('pages.404', $data);
+    }
+    public function pendaftaran(){
+        $contacts = Contact::all();
+
+        $data = [
+            'title'=>'pedaftaran',
+            'active'=>'pendaftaran',
+            'contacts'=>$contacts,
+        ];
+        return view('pages.pendaftaran',$data);
     }
 }

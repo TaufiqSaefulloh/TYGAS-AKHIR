@@ -47,7 +47,7 @@
                         </p>
 
                         <h5 class="fw-bold mt-4 mb-2">Link Pendaftaran</h5>
-                        <a href="{{$event->link_pendaftaran}}" target="_blank" type="button" class="btn btn-fill-blue px-5 ">Daftar Event Sekarang</a>
+                        <a href="{{route('pendaftaran')}}" target="_blank" type="button" class="btn btn-fill-blue px-5 ">Daftar Event Sekarang</a>
 
                     </div>
                 </div>
